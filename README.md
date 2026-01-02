@@ -3,7 +3,7 @@
 A lightweight, full-stack web application to manage contacts effectively. Built as a demonstration of MERN stack fundamentals, focusing on clean architecture and responsive design.
 
 ## 🚀 Live preview Link
-
+https://contact-manager-client-x7kd.onrender.com
 
 ## 🚀 Features
 
