@@ -10,6 +10,7 @@ function App() {
     phone: '',
     message: ''
   })
+  const [toast, setToast] = useState('')
 
   const fetchContacts = async () => {
     try {
@@ -44,12 +45,18 @@ function App() {
     } catch (err) {
       setError(err.response?.data?.message || 'Error adding contact')
     }
+    finally {
+      setToast('Contact added successfully! 🚀')
+      setTimeout(() => {
+        setToast('')
+      }, 3000)
+    }
   }
 
   // 4. Delete Contact (DELETE) - The Bonus
   const onDelete = async (id) => {
-    if(!window.confirm("Are you sure?")) return;
-    
+    if (!window.confirm("Are you sure?")) return;
+
     try {
       await api.delete(`/contact/${id}`)
       setContacts(contacts.filter((contact) => contact._id !== id))
@@ -73,7 +80,7 @@ function App() {
               {error}
             </div>
           )}
-          
+
           <div className="flex flex-col gap-2">
             <input
               type="text"
@@ -107,8 +114,8 @@ function App() {
               rows="3"
               className="border-2 border-gray-200 p-3 rounded-xl focus:border-indigo-400 focus:outline-none transition-all resize-none"
             ></textarea>
-            
-            <button 
+
+            <button
               onClick={onSubmit}
               disabled={!formData.name || !formData.email || !formData.phone}
               className="bg-linear-to-r from-indigo-500 to-purple-600 text-white p-4 rounded-xl hover:from-indigo-600 hover:to-purple-700 disabled:from-gray-300 disabled:to-gray-400 font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed"
@@ -127,11 +134,11 @@ function App() {
               {contacts.length} {contacts.length === 1 ? 'Contact' : 'Contacts'}
             </span>
           </div>
-          
+
           <div className="grid gap-4">
             {contacts.map((contact) => (
-              <div 
-                key={contact._id} 
+              <div
+                key={contact._id}
                 className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all border border-gray-100 flex justify-between items-start group"
               >
                 <div className="flex-1">
@@ -150,7 +157,7 @@ function App() {
                     </p>
                   )}
                 </div>
-                <button 
+                <button
                   onClick={() => onDelete(contact._id)}
                   className="text-red-400 hover:text-red-600 hover:bg-red-50 px-4 py-2 rounded-lg font-semibold text-sm transition-all ml-4"
                 >
@@ -166,6 +173,11 @@ function App() {
           </div>
         </div>
       </div>
+      {toast && (
+        <div className="fixed bottom-5 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-xl animate-bounce">
+          {toast}
+        </div>
+      )}
     </div>
   )
 }
